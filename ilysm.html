@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поздравление</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #3a3a50);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        #showImagesButton {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #666666;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        .imageContainer {
+            position: absolute;
+            animation: floatDown 10s linear forwards;
+            text-align: center;
+            color: #ffffff;
+            font-size: 18px;
+        }
+        .imageContainer img {
+            max-width: 150px;
+            border-radius: 10px;
+        }
+        @keyframes floatDown {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffcc00;
+            opacity: 0.7;
+            animation: confetti-explode 1s forwards;
+            border-radius: 50%;
+        }
+        @keyframes confetti-explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="showImagesButton">Нажми</button>
+    
+    <script>
+        const images = [
+            {
+                image: 'https://cdn.kanobu.ru/editor/images/54/37e9fd1e-0e0f-4245-b695-b4d5012eb9a9.webp', 
+                message: 'Ты для меня всё! Люблю тебя бесконечно!'
+            },
+            {
+                image: 'https://i.pinimg.com/236x/9a/d9/31/9ad931fa18602791a577c210d7bbf071.jpg',
+                message: 'С тобой каждый момент — особенный!'
+            },
+            {
+                image: 'https://i.pinimg.com/originals/07/01/c2/0701c2c3e1db11e9cb1946cbfd373b2f.jpg',
+                message: 'Ты — свет моей жизни! С Днём Рождения!'
+            },
+            {
+                image: 'https://i.pinimg.com/736x/ce/7f/f4/ce7ff4cb92bb23dc553ad1e7f37d426b.jpg',
+                message: 'Пусть все мечты сбываются!'
+            },
+            {
+                image: 'https://i.pinimg.com/736x/07/0b/81/070b81b05d95d24ab4d11e0a8246e728.jpg',
+                message: 'Ты лучшая, что случалось со мной!'
+            },
+            {
+                image: 'https://i.pinimg.com/236x/6b/81/f0/6b81f082c15c137436807236be0b9d1d.jpg',
+                message: 'Счастья, любви и радости в этот день!'
+            },
+            {
+                image: 'https://i.pinimg.com/236x/63/a1/94/63a194cc70ffc8854b7b5b2f49ff1631.jpg',
+                message: 'Ты мой идеал!'
+            },
+            {
+                image: 'https://cdn.kanobu.ru/articles/pics/tmp/images/2023/7/28/dc4ba34c-2008-4c02-b53e-0eeb5cbdd95e.webp',
+                message: 'Пусть жизнь будет сладкой, как твоя улыбка!'
+            },
+            {
+                image: 'https://cdn.kanobu.ru/editor/images/44/398d8834-78dd-466c-8245-fbd15494f7af.jpeg',
+                message: 'Я счастлива, что ты есть в моей жизни!'
+            },
+            {
+                image: 'https://newcdn.igromania.ru/articles/pics/tmp/images/2024/3/31/c6f32e13-1b1d-4fae-9464-8b2e9ac0164e.webp',
+                message: 'Пусть твой день будет незабываемым!'
+            }
+        ];
+
+        const showImagesButton = document.getElementById('showImagesButton');
+
+        showImagesButton.addEventListener('click', () => {
+            let index = 0;
+
+            const showNextImage = () => {
+                if (index < images.length) {
+                    const item = images[index];
+                    const imageContainer = document.createElement('div');
+                    imageContainer.className = 'imageContainer';
+                    imageContainer.style.left = Math.random() * 80 + 'vw'; // Рандомная позиция по горизонтали
+                    imageContainer.style.top = Math.random() * 20 + 'vh'; // Рандомная позиция по вертикали
+                    
+                    imageContainer.innerHTML = `
+                        <img src="${item.image}" alt="Image">
+                        <p>${item.message}</p>
+                    `;
+                    
+                    document.body.appendChild(imageContainer);
+
+                    // Удаляем элемент после завершения анимации
+                    setTimeout(() => {
+                        imageContainer.remove();
+                    }, 10000); // Соответствует времени анимации
+
+                    // Генерируем конфетти
+                    for (let i = 0; i < 50; i++) {
+                        createConfetti();
+                    }
+
+                    index++;
+                    setTimeout(showNextImage, 2000); // Интервал между изображениями
+                }
+            };
+
+            showNextImage();
+        });
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = `${window.innerWidth / 2}px`;
+            confetti.style.top = `${window.innerHeight / 2}px`;
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`; // Разные цвета конфетти
+
+            document.body.appendChild(confetti);
+
+            // Задаем случайное направление взрыва
+            const angle = Math.random() * 2 * Math.PI;
+            const xOffset = Math.cos(angle) * (Math.random() * 100);
+            const yOffset = Math.sin(angle) * (Math.random() * 100);
+
+            confetti.animate([
+                { transform: 'translate(0, 0)', opacity: 1 },
+                { transform: `translate(${xOffset}px, ${yOffset}px)`, opacity: 0 }
+            ], {
+                duration: 1000,
+                easing: 'ease-out',
+                fill: 'forwards'
+            });
+
+            // Удаляем конфетти после анимации
+            setTimeout(() => {
+                confetti.remove();
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
